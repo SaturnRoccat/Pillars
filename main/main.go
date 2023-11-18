@@ -21,14 +21,32 @@ func gwd() string {
 	return wd
 }
 
+const (
+	HELP = `
+	The Pillar Compiler Is Designed To Allow For Easy MCBE Add-On Development.
+	Usage:
+		pillar init -projectName <projectName> -pathToRoot <pathToRoot>
+		pillar build -pathToRoot <pathToRoot> -bypassCache <bypassCache>
+		pillar help
+	
+	init - Creates the default state for the compiler to work with.
+		-projectName - The name of the project
+		-pathToRoot - The path to the root of the project
+
+	build - Builds the project
+		-pathToRoot - The path to the root of the project
+		-bypassCache - Bypass the cache and recompile everything. Also regenerates the cache. This is an advanced feature and should only be used if you know what you are doing.
+	`
+)
+
 func main() {
 	// add the init flags
 	projectName := InitMode.String("projectName", "", "The name of the project")
 	pathToRoot := InitMode.String("pathToRoot", gwd(), "The path to the root of the project")
 
 	// add the build flags
-	pathToRootBuild := BuildMode.String("pathToRoot", gwd(), "The path to the root of the project")
-	bypassCache := BuildMode.Bool("bypassCache", false, "Bypass the cache and recompile everything. Also regenerates the cache.")
+	//pathToRootBuild := BuildMode.String("pathToRoot", gwd(), "The path to the root of the project")
+	//bypassCache := BuildMode.Bool("bypassCache", false, "Bypass the cache and recompile everything. Also regenerates the cache.")
 
 	fmt.Println("Started The Pillar Compiler! For MCBE add-on development! You are using version " + fmt.Sprint(VERSION) + ".")
 
@@ -54,6 +72,8 @@ func main() {
 	case "build":
 		BuildMode.Parse(os.Args[2:])
 		fmt.Println("Building...")
+	case "help":
+		fmt.Println(HELP)
 	}
 
 }
