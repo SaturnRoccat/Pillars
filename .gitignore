@@ -1,1 +1,4 @@
 *.exe
+.vscode
+# ignore all files in the CompilerTests directory
+CompilerTests/
