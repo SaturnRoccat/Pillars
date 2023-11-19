@@ -47,6 +47,7 @@ func buildAddon(sources, targets []string, bypassCache bool, pathToTemp string) 
 		/*
 			TODO:
 				- Call any external plugins that request to be called on build (e.g. a plugin that minifies files)
+				- Call all stages that are in the build pipeline (e.g. a stage that compiles typescript to javascript) or any custom stages that are in the build pipeline
 		*/
 
 		println("Done building. For " + target + "!...")
