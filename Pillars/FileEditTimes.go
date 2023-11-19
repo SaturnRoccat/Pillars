@@ -1,10 +1,10 @@
-package main
+package Pillars
 
 import (
 	"encoding/json"
 	"os"
 
-	"github.com/duckos-Mods/Pillars/main/PC"
+	"github.com/duckos-Mods/Pillars/Pillars/PC"
 )
 
 func updateFileEditTimes(FETTpUpdate map[string]int64, PFJ PC.ProjectFileJson) {

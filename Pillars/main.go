@@ -1,4 +1,4 @@
-package main
+package Pillars
 
 import (
 	"flag"
@@ -42,7 +42,7 @@ const (
 	`
 )
 
-func main() {
+func MainPass() {
 	// add the init flags
 	projectName := InitMode.String("projectName", "", "The name of the project")
 	pathToRoot := InitMode.String("pathToRoot", gwd(), "The path to the root of the project")

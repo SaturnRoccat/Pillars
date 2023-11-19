@@ -1,11 +1,11 @@
-package main
+package Pillars
 
 import (
 	"encoding/json"
 	"fmt"
 	"os"
 
-	"github.com/duckos-Mods/Pillars/main/PC"
+	"github.com/duckos-Mods/Pillars/Pillars/PC"
 )
 
 var (
