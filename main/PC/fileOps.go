@@ -1,6 +1,7 @@
 package PC
 
 import (
+	"encoding/json"
 	"io"
 	"os"
 	"path/filepath"
@@ -41,7 +42,9 @@ func CopyFile(source, destination string) error {
 	defer srcFile.Close()
 
 	// Create the destination file
-	destFile, err := os.Create(destination)
+	var _, fileExt string = filepath.Split(source)
+
+	destFile, err := os.Create(destination + "\\" + fileExt)
 	if err != nil {
 		return err
 	}
@@ -77,6 +80,48 @@ func BulkFileCopy(source, target string, filesToIgnore map[string]bool) error {
 		if _, ok := filesToIgnore[file]; !ok {
 			// Move the file to the target dir
 			err := CopyFile(file, target)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func PullJson[T interface{}](PTJ string) (T, error) {
+	var config T
+	var jsonData []byte
+	var err error
+
+	jsonData, err = os.ReadFile(PTJ)
+	if err != nil {
+		return config, err
+	}
+
+	err = json.Unmarshal(jsonData, &config)
+	if err != nil {
+		return config, err
+	}
+
+	return config, nil
+}
+
+func DeleteContents(directory string) error {
+	dirEntries, err := os.ReadDir(directory)
+	if err != nil {
+		return err
+	}
+
+	for _, entry := range dirEntries {
+		entryPath := filepath.Join(directory, entry.Name())
+
+		if entry.IsDir() {
+			err := os.RemoveAll(entryPath) // RemoveAll deletes files and subdirectories recursively
+			if err != nil {
+				return err
+			}
+		} else {
+			err := os.Remove(entryPath)
 			if err != nil {
 				return err
 			}
