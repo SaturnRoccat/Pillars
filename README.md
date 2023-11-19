@@ -20,7 +20,7 @@ To get started with Pillars, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/minecraft-bedrock-add-on-compiler.git
+   git clone https://github.com/Duckos-Mods/Pillars.git
    ```
 
 2. Install Golang if you haven't already. You can download it from the official Golang website: https://golang.org/
