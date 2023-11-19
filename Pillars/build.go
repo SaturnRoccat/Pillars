@@ -50,6 +50,12 @@ func buildAddon(sources, targets []string, bypassCache bool, pathToTemp string) 
 		*/
 
 		println("Done building. For " + target + "!...")
+		// Create the target dir
+		err = os.MkdirAll(target, 0777)
+		if err != nil {
+			return err
+		}
+
 		// Copy all files from the temp dir to the build dir
 		err = PC.BulkFileCopy(source, target, nil)
 		if err != nil {
