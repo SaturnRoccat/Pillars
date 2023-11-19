@@ -4,33 +4,27 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/duckos-Mods/Pillars/main/PC"
 )
 
-type ProjectConfig struct {
-	Version     []int  `json:"version"`
-	ProjectName string `json:"projectName"`
-	BPPath      string `json:"bpPath"`
-	RPPath      string `json:"rpPath"`
-	TempPath    string `json:"tempPath"`
-}
+var (
+	ProjectConfigPath = ""
+	FileEditTimesPath = ""
 
-type ProjectFileNameAndEditTime struct {
-	FileName string `json:"fileName"`
-	EditTime int64  `json:"editTime"`
-}
+	// TODO: Make this configurable
+	MCBEPath = os.Getenv("LOCALAPPDATA") + "/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang"
+)
 
-type ProjectFileJson struct {
-	// We need to store an array of file names and their edit times
-	FileArray []ProjectFileNameAndEditTime `json:"FileEditTimes"`
-}
-
-func writeDefaultConfig(pathToConfig string, config ProjectConfig) {
+func writeDefaultConfig(pathToConfig string, config PC.ProjectConfig) {
 	json, _ := json.Marshal(config)
+	ProjectConfigPath = pathToConfig
 	os.WriteFile(pathToConfig, []byte(json), 0777)
 }
 
-func writeCJson(pathToCJson string, fjson ProjectFileJson) {
+func writeCJson(pathToCJson string, fjson PC.ProjectFileJson) {
 	json, _ := json.Marshal(fjson)
+	FileEditTimesPath = pathToCJson
 	os.WriteFile(pathToCJson, []byte(json), 0777)
 }
 
@@ -81,7 +75,7 @@ func createDefaultState(pathToRoot string, projectName string) error {
 		return err
 	}
 
-	defaultConfig := ProjectConfig{
+	defaultConfig := PC.ProjectConfig{
 		Version:     VERSION,
 		ProjectName: projectName,
 		BPPath:      fmt.Sprintf("%s/%s_Bp", pathToRoot, projectName),
@@ -92,8 +86,8 @@ func createDefaultState(pathToRoot string, projectName string) error {
 	writeDefaultConfig(fmt.Sprintf("%s/Pillars/ProjectConfig.json", pathToRoot), defaultConfig)
 
 	// Write the default file edit times to the FileEditTimes.json file
-	defaultFileEditTimes := ProjectFileJson{
-		FileArray: []ProjectFileNameAndEditTime{},
+	defaultFileEditTimes := PC.ProjectFileJson{
+		FileArray: map[string]int64{},
 	}
 
 	writeCJson(fmt.Sprintf("%s/Pillars/FileEditTimes.json", pathToRoot), defaultFileEditTimes)
