@@ -11,6 +11,9 @@ var (
 
 	InitMode  = flag.NewFlagSet("init", flag.ExitOnError)
 	BuildMode = flag.NewFlagSet("build", flag.ExitOnError)
+
+	PTPR = ""
+	FETP = ""
 )
 
 func gwd() string {
@@ -45,7 +48,7 @@ func main() {
 	pathToRoot := InitMode.String("pathToRoot", gwd(), "The path to the root of the project")
 
 	// add the build flags
-	//pathToRootBuild := BuildMode.String("pathToRoot", gwd(), "The path to the root of the project")
+	pathToRootBuild := BuildMode.String("pathToRoot", gwd(), "The path to the root of the project")
 	//bypassCache := BuildMode.Bool("bypassCache", false, "Bypass the cache and recompile everything. Also regenerates the cache.")
 
 	fmt.Println("Started The Pillar Compiler! For MCBE add-on development! You are using version " + fmt.Sprint(VERSION) + ".")
@@ -72,6 +75,12 @@ func main() {
 	case "build":
 		BuildMode.Parse(os.Args[2:])
 		fmt.Println("Building...")
+		PTPR = *pathToRootBuild
+		FETP = fmt.Sprintf("%s/Pillars/FileEditTimes.json", PTPR)
+		err := build(*pathToRootBuild)
+		if err != nil {
+			panic(err)
+		}
 	case "help":
 		fmt.Println(HELP)
 	}
