@@ -32,47 +32,63 @@ func createDefaultState(pathToRoot string, projectName string) error {
 	// Make the Pillars directory
 	err := os.Mkdir(fmt.Sprintf("%s/Pillars", pathToRoot), 0777)
 	if err != nil {
-		return err
+		if !os.IsExist(err) {
+			return err
+		}
 	}
 
 	// Make the Pillars/ProjectConfig.json file
 	_, err = os.Create(fmt.Sprintf("%s/Pillars/ProjectConfig.json", pathToRoot))
 	if err != nil {
-		return err
+		if !os.IsExist(err) {
+			return err
+		}
 	}
 
 	// Make the Pillars/BPFileEditTimes.json
 	_, err = os.Create(fmt.Sprintf("%s/Pillars/BPFileEditTimes.json", pathToRoot))
 	if err != nil {
-		return err
+		if !os.IsExist(err) {
+			return err
+		}
 	}
 
 	// Make the Pillars/RPFileEditTimes.json
 	_, err = os.Create(fmt.Sprintf("%s/Pillars/RPFileEditTimes.json", pathToRoot))
 	if err != nil {
-		return err
+		if !os.IsExist(err) {
+			return err
+		}
 	}
 
 	// Make the Pillars/ProjectName.txt
 	_, err = os.Create(fmt.Sprintf("%s/Pillars/ProjectName.txt", pathToRoot))
 	if err != nil {
-		return err
+		if !os.IsExist(err) {
+			return err
+		}
 	}
 
 	// Make the Pillars/Temp directory
 	err = os.Mkdir(fmt.Sprintf("%s/Pillars/Temp", pathToRoot), 0777)
 	if err != nil {
-		return err
+		if !os.IsExist(err) {
+			return err
+		}
 	}
 
 	// Create the RP and BP directories
 	err = os.Mkdir(fmt.Sprintf("%s/%s_Bp", pathToRoot, projectName), 0777)
 	if err != nil {
-		return err
+		if !os.IsExist(err) {
+			return err
+		}
 	}
 	err = os.Mkdir(fmt.Sprintf("%s/%s_Rp", pathToRoot, projectName), 0777)
 	if err != nil {
-		return err
+		if !os.IsExist(err) {
+			return err
+		}
 	}
 
 	// Write the project name to the ProjectName.txt file

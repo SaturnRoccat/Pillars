@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	VERSION = []int{0, 0, 1}
+	VERSION = []int{1, 0, 0}
 
 	InitMode  = flag.NewFlagSet("init", flag.ExitOnError)
 	BuildMode = flag.NewFlagSet("build", flag.ExitOnError)
