@@ -1,7 +1,6 @@
 package PC
 
 import (
-	"encoding/json"
 	"io"
 	"os"
 	"path/filepath"
@@ -76,8 +75,9 @@ func BulkFileCopy(source, target string, filesToIgnore map[string]bool) error {
 
 	// Loop through all files
 	for _, file := range files {
+		var _, fileExt = filepath.Split(file)
 		// Check if the file is in the filesToIgnore map
-		if _, ok := filesToIgnore[file]; !ok {
+		if _, ok := filesToIgnore[fileExt]; !ok {
 			// Move the file to the target dir
 			err := CopyFile(file, target)
 			if err != nil {
@@ -86,24 +86,6 @@ func BulkFileCopy(source, target string, filesToIgnore map[string]bool) error {
 		}
 	}
 	return nil
-}
-
-func PullJson[T interface{}](PTJ string) (T, error) {
-	var config T
-	var jsonData []byte
-	var err error
-
-	jsonData, err = os.ReadFile(PTJ)
-	if err != nil {
-		return config, err
-	}
-
-	err = json.Unmarshal(jsonData, &config)
-	if err != nil {
-		return config, err
-	}
-
-	return config, nil
 }
 
 func DeleteContents(directory string) error {

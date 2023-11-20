@@ -3,11 +3,12 @@ package Pillars
 import (
 	"encoding/json"
 	"os"
+	"path/filepath"
 
 	"github.com/duckos-Mods/Pillars/Pillars/PC"
 )
 
-func updateFileEditTimes(FETTpUpdate map[string]int64, PFJ PC.ProjectFileJson) {
+func updateFileEditTimes(FETTpUpdate map[string]int64, PFJ PC.ProjectFileJson, FEDP string) {
 	// loop through the files to update
 	for file, time := range FETTpUpdate {
 		// update the file edit time
@@ -18,12 +19,11 @@ func updateFileEditTimes(FETTpUpdate map[string]int64, PFJ PC.ProjectFileJson) {
 	// marshal the json
 	json, _ := json.Marshal(PFJ)
 
-	var FEDP = PTPR + "/Pillars/FileEditTimes.json"
 	// write the json to the file
 	os.WriteFile(FEDP, []byte(json), 0777)
 }
 
-func getFilesToIgnore(pathToRoot string) map[string]bool {
+func getFilesToIgnore(pathToRoot string, FETP string) map[string]bool {
 	println("Getting files to ignore...")
 	var filesToIgnore = make(map[string]bool)
 	var filesToUpdate = make(map[string]int64)
@@ -43,25 +43,26 @@ func getFilesToIgnore(pathToRoot string) map[string]bool {
 
 	// loop through all files in the root dir
 	for file, info := range files {
+		var _, fileExt = filepath.Split(file)
 		// check if the file is in the FETJson
-		if _, ok := FETJson.FileArray[file]; ok {
+		if _, ok := FETJson.FileArray[fileExt]; ok {
 			// check if the edit time is the same
-			if FETJson.FileArray[file] == info.ModTime().Unix() {
+			if FETJson.FileArray[fileExt] == info.ModTime().Unix() {
 				// if it is, add it to the filesToIgnore map
-				filesToIgnore[file] = true
+				filesToIgnore[fileExt] = true
 			} else {
 				// if it isn't, add it to the filesToUpdate map
-				filesToUpdate[file] = info.ModTime().Unix()
+				filesToUpdate[fileExt] = info.ModTime().Unix()
 			}
 		} else {
 			// if it isn't, add it to the filesToUpdate map
-			filesToUpdate[file] = info.ModTime().Unix()
+			filesToUpdate[fileExt] = info.ModTime().Unix()
 		}
 	}
 	println("Done getting files to ignore.")
 	println("Updating file edit times...")
 	// update the file edit times
-	updateFileEditTimes(filesToUpdate, FETJson)
+	updateFileEditTimes(filesToUpdate, FETJson, FETP)
 	println("Done updating file edit times.")
 	return filesToIgnore
 }

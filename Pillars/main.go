@@ -76,7 +76,6 @@ func MainPass() {
 		BuildMode.Parse(os.Args[2:])
 		fmt.Println("Building...")
 		PTPR = *pathToRootBuild
-		FETP = fmt.Sprintf("%s/Pillars/FileEditTimes.json", PTPR)
 		err := build(*pathToRootBuild, *bypassCache)
 		if err != nil {
 			panic(err)

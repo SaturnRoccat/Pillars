@@ -41,8 +41,14 @@ func createDefaultState(pathToRoot string, projectName string) error {
 		return err
 	}
 
-	// Make the Pillars/FileEditTimes.json
-	_, err = os.Create(fmt.Sprintf("%s/Pillars/FileEditTimes.json", pathToRoot))
+	// Make the Pillars/BPFileEditTimes.json
+	_, err = os.Create(fmt.Sprintf("%s/Pillars/BPFileEditTimes.json", pathToRoot))
+	if err != nil {
+		return err
+	}
+
+	// Make the Pillars/RPFileEditTimes.json
+	_, err = os.Create(fmt.Sprintf("%s/Pillars/RPFileEditTimes.json", pathToRoot))
 	if err != nil {
 		return err
 	}
