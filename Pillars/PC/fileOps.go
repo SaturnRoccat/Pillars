@@ -19,6 +19,19 @@ func GetFilesInDir(dir string) []string {
 	return files
 }
 
+func GetFilesInDirWithExt(dir string, ext string) []string {
+	// Get all files in the dir and return them in a slice
+	var files []string
+	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() || filepath.Ext(path) != ext {
+			return nil
+		}
+		files = append(files, path)
+		return nil
+	})
+	return files
+}
+
 func GetFileInfoInDir(dir string) map[string]os.FileInfo {
 	// Get all files in the dir and return them in a map
 	var files = make(map[string]os.FileInfo)
