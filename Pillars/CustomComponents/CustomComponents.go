@@ -15,8 +15,8 @@ type Component struct {
 	// Atable will store all variables that are used in the component
 	Atable map[string][]map[string]string
 
-	// ITable will store all included json files
-	ITable map[string]string
+	// // ITable will store all included json files
+	// ITable map[string]string
 
 	// Component Groups
 	ComponentGroupData map[string]SectionData

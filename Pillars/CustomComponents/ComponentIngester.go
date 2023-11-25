@@ -48,9 +48,9 @@ func loadCustomComponent(path string) (Component, error) {
 			comp.Atable[v["name"]] = append(comp.Atable[v["name"]], v)
 		}
 	})
-	ifComponentContainsKey[map[string]string](&jsonOp, "ITable", func(data map[string]string) {
-		comp.ITable = data
-	})
+	// ifComponentContainsKey[map[string]string](&jsonOp, "ITable", func(data map[string]string) {
+	// 	comp.ITable = data
+	// })
 	ifComponentContainsKey[map[string]interface{}](&jsonOp, "componentGroupData", func(data map[string]interface{}) {
 		comp.ComponentGroupData = make(map[string]SectionData)
 		for k, v := range data {
