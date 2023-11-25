@@ -43,37 +43,25 @@ func loadCustomComponent(path string) (Component, error) {
 
 	// Read the data we don't know exists
 	ifComponentContainsKey[[]map[string]string](&jsonOp, "ATable", func(data []map[string]string) {
-		comp.Atable = make(map[string][]map[string]string)
-		for _, v := range data {
-			comp.Atable[v["name"]] = append(comp.Atable[v["name"]], v)
+		comp.Atable = make([]ComponentArguments, len(data))
+		for i, v := range data {
+			comp.Atable[i] = ComponentArguments{Name: v["argName"], Type: v["argType"]}
 		}
 	})
 	// ifComponentContainsKey[map[string]string](&jsonOp, "ITable", func(data map[string]string) {
 	// 	comp.ITable = data
 	// })
 	ifComponentContainsKey[map[string]interface{}](&jsonOp, "componentGroupData", func(data map[string]interface{}) {
-		comp.ComponentGroupData = make(map[string]SectionData)
-		for k, v := range data {
-			comp.ComponentGroupData[k] = SectionData{JsonData: v.(map[string]interface{})}
-		}
+		comp.ComponentGroupData = SectionData{JsonData: data}
 	})
 	ifComponentContainsKey[map[string]interface{}](&jsonOp, "permutationData", func(data map[string]interface{}) {
-		comp.PermutationData = make(map[string]SectionData)
-		for k, v := range data {
-			comp.PermutationData[k] = SectionData{JsonData: v.(map[string]interface{})}
-		}
+		comp.PermutationData = SectionData{JsonData: data}
 	})
 	ifComponentContainsKey[map[string]interface{}](&jsonOp, "eventData", func(data map[string]interface{}) {
-		comp.EventData = make(map[string]SectionData)
-		for k, v := range data {
-			comp.EventData[k] = SectionData{JsonData: v.(map[string]interface{})}
-		}
+		comp.EventData = SectionData{JsonData: data}
 	})
 	ifComponentContainsKey[map[string]interface{}](&jsonOp, "descriptionData", func(data map[string]interface{}) {
-		comp.DescriptionData = make(map[string]SectionData)
-		for k, v := range data {
-			comp.DescriptionData[k] = SectionData{JsonData: v.(map[string]interface{})}
-		}
+		comp.DescriptionData = SectionData{JsonData: data}
 	})
 
 	// Close the file
