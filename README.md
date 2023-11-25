@@ -29,12 +29,14 @@ To get started with Pillars, follow these steps:
 
    ```bash
    go build ./main
+   
+   go install
    ```
 
 4. Run the compiler:
 
    ```bash
-   ./main.exe
+   Pillars
    ```
 
 5. Follow the instructions provided by the compiler to compile your add-on.
