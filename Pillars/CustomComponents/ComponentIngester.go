@@ -20,7 +20,6 @@ func ifComponentContainsKey[CompType interface{}](jsonOp *map[string]interface{}
 	if data, ok := (*jsonOp)[key].(CompType); ok {
 		ifContainsFunc(data)
 	}
-	return
 }
 
 func loadCustomComponent(path string) (Component, error) {
