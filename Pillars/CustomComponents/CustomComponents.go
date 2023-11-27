@@ -1,6 +1,9 @@
 package customcomponents
 
-import "regexp"
+import (
+	"fmt"
+	"regexp"
+)
 
 type SectionData struct {
 	// The json data for the section
@@ -127,10 +130,55 @@ func (C *Component) handleArguments(args []ComponentArguments) {
 	}
 }
 
-func (C *Component) Build(args []ComponentArguments, otherComponents *map[string]Component) ([]map[string]interface{}, error) {
-	var returnJsons []map[string]interface{} = make([]map[string]interface{}, 0)
+// Im lazy and dont wanna do this rn
+func (C *Component) DecodeArgs(argsToDecode interface{}) []ComponentArguments {
+	var args []ComponentArguments = make([]ComponentArguments, 0)
+	return args
+}
+
+func (C *Component) handleNestedCustomComponents(otherComponents *map[string]Component) {
+	for k, v := range C.ComponentGroupData.JsonData {
+		if _, ok := (*otherComponents)[k]; ok {
+			var args = C.DecodeArgs(v)
+			var otherComp = (*otherComponents)[k]
+			var compData, err = otherComp.Build(args, otherComponents)
+			if err != nil {
+				// panic(err) // We can comment out because we just are gonna have a stripping phase that removes all components that have errors and throws a warning
+				return
+			}
+
+			// We need to merge the data
+			for k, v := range compData {
+				switch k {
+				case "componentGroupData":
+					for k, v := range v {
+						C.ComponentGroupData.JsonData[k] = v
+					}
+				case "permutationData":
+					for k, v := range v {
+						C.PermutationData.JsonData[k] = v
+					}
+				case "eventData":
+					for k, v := range v {
+
+						C.EventData.JsonData[k] = v
+					}
+				case "descriptionData":
+					for k, v := range v {
+						C.DescriptionData.JsonData[k] = v
+					}
+				default:
+					println(fmt.Sprintf("Unknown key %s. This shouldnt ever trigger", k))
+				}
+			}
+		}
+	}
+}
+
+func (C *Component) Build(args []ComponentArguments, otherComponents *map[string]Component) (map[string]map[string]interface{}, error) {
+	var returnJsons map[string]map[string]interface{} = make(map[string]map[string]interface{}, 0)
 	// Handle the arguments
 	C.handleArguments(args)
-
+	C.handleNestedCustomComponents(otherComponents)
 	return returnJsons, nil
 }
